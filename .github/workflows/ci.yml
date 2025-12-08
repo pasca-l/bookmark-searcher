@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+
+# automatically cancel in-progress actions on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: backend/.python-version
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml', '**/uv.lock') }}
+          restore-keys: uv-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-
+      - run: curl -LsSf https://astral.sh/uv/install.sh | sh && uv sync
+      - run: make lint
