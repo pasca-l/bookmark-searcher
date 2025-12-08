@@ -36,3 +36,42 @@ jobs:
           restore-keys: uv-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-
       - run: curl -LsSf https://astral.sh/uv/install.sh | sh && uv sync
       - run: make lint
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ./backend
+    services:
+      postgres:
+        image: postgres:18-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+        options: >-
+          --health-cmd="pg_isready -U testuser -d testdb"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: testdb
+      DB_USER: testuser
+      DB_PASSWORD: testpassword
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: backend/.python-version
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml', '**/uv.lock') }}
+          restore-keys: uv-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-
+      - run: curl -LsSf https://astral.sh/uv/install.sh | sh && uv sync
+      - run: make test
