@@ -31,6 +31,9 @@ services:
       - DB_USER=bookmark_searcher_user
       - DB_PASSWORD=bookmark_searcher_password
       - ATLAS_DEV_IMAGE=bookmark-searcher-postgres:latest
+    volumes:
+      - ./app/db/schema/schema.sql:/app/app/db/schema/schema.sql:ro
+      - ./atlas.hcl:/app/atlas.hcl:ro
     depends_on:
       bookmark-searcher-postgres:
         condition: service_healthy

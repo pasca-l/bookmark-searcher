@@ -1,12 +1,6 @@
 import pytest
 
-from app.db.connection import new_database
 from app.repositories.user import UserRepository
-
-
-@pytest.fixture
-def db():
-    return new_database()
 
 
 @pytest.fixture
