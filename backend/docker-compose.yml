@@ -39,7 +39,7 @@ services:
         condition: service_healthy
 
   bookmark-searcher-postgres:
-    image: postgres:18-alpine
+    image: pgvector/pgvector:pg18-trixie
     ports:
       - "5432:5432"
     environment:
