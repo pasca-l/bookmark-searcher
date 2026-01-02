@@ -1,16 +1,16 @@
 import uvicorn
 from fastapi import FastAPI
 
+from app.api.endpoints import bookmarks, root
+
 app = FastAPI(
     title="Bookmark Searcher API",
     description="A personal search engine for bookmarked webpages using RAG",
     version="0.1.0",
 )
 
-
-@app.get("/")
-async def root():
-    return {"message": "Bookmark Searcher API", "status": "running"}
+app.include_router(root.router)
+app.include_router(bookmarks.router)
 
 
 if __name__ == "__main__":
