@@ -16,10 +16,10 @@ class TestChunkRepository:
                 # no pre-existing chunks
                 {
                     "bookmarks": [
-                        {"id": 1, "url": "https://test.com", "title": "Test website"},
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
                     ]
                 },
-                1,
+                "b0000000-0000-0000-0000-000000000001",
                 [
                     (0, [0.1] * 384, "First chunk content"),
                     (1, [0.2] * 384, "Second chunk content"),
@@ -30,10 +30,10 @@ class TestChunkRepository:
                 # insert empty chunks list
                 {
                     "bookmarks": [
-                        {"id": 1, "url": "https://test.com", "title": "Test website"},
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
                     ]
                 },
-                1,
+                "b0000000-0000-0000-0000-000000000001",
                 [],
                 {"count": 0},
             ),
@@ -55,20 +55,20 @@ class TestChunkRepository:
             pytest.param(
                 # pre-existing chunk data with limit
                 {
-                    "users": [{"id": 100}, {"id": 101}],
+                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}, {"id": "a0000000-0000-0000-0000-000000000002"}],
                     "bookmarks": [
-                        {"id": 10, "url": "https://test1.com", "title": "Test 1"},
-                        {"id": 20, "url": "https://test2.com", "title": "Test 2"},
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test1.com", "title": "Test 1"},
+                        {"id": "b0000000-0000-0000-0000-000000000002", "url": "https://test2.com", "title": "Test 2"},
                     ],
                     "user_bookmarks": [
-                        {"id": 1, "user_id": 100, "bookmark_id": 10},
-                        {"id": 2, "user_id": 100, "bookmark_id": 20},
-                        {"id": 3, "user_id": 101, "bookmark_id": 20},
+                        {"id": 1, "user_id": "a0000000-0000-0000-0000-000000000001", "bookmark_id": "b0000000-0000-0000-0000-000000000001"},
+                        {"id": 2, "user_id": "a0000000-0000-0000-0000-000000000001", "bookmark_id": "b0000000-0000-0000-0000-000000000002"},
+                        {"id": 3, "user_id": "a0000000-0000-0000-0000-000000000002", "bookmark_id": "b0000000-0000-0000-0000-000000000002"},
                     ],
                     "chunks": [
                         {
                             "id": 1,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 0,
                             "embedding": [
                                 0.5 if i % 2 == 0 else 0.1 for i in range(384)
@@ -77,7 +77,7 @@ class TestChunkRepository:
                         },
                         {
                             "id": 2,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 1,
                             "embedding": [
                                 0.1 if i % 3 == 0 else 0.5 for i in range(384)
@@ -86,14 +86,14 @@ class TestChunkRepository:
                         },
                         {
                             "id": 3,
-                            "bookmark_id": 20,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000002",
                             "chunk_index": 0,
                             "embedding": [0.3] * 384,
                             "content": "Bookmark 20 - Chunk 0",
                         },
                     ],
                 },
-                100,
+                "a0000000-0000-0000-0000-000000000001",
                 [0.3] * 384,
                 1,
                 {
@@ -111,29 +111,29 @@ class TestChunkRepository:
             pytest.param(
                 # user with no bookmarks
                 {
-                    "users": [{"id": 100}],
+                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
                     "bookmarks": [
-                        {"id": 10, "url": "https://test1.com", "title": "Test website"}
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test1.com", "title": "Test website"}
                     ],
                     "user_bookmarks": [],
                     "chunks": [
                         {
                             "id": 1,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 0,
                             "embedding": [0.1] * 384,
                             "content": "Bookmark 10 - Chunk 0",
                         },
                         {
                             "id": 2,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 1,
                             "embedding": [0.2] * 384,
                             "content": "Bookmark 10 - Chunk 1",
                         },
                     ],
                 },
-                100,
+                "a0000000-0000-0000-0000-000000000001",
                 [0.5] * 384,
                 None,
                 {"count": 0, "chunks": []},
@@ -172,52 +172,52 @@ class TestChunkRepository:
                 # pre-existing chunks to delete
                 {
                     "bookmarks": [
-                        {"id": 10, "url": "https://test.com", "title": "Test website"},
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
                     ],
                     "chunks": [
                         {
                             "id": 1,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 0,
                             "embedding": [0.1] * 384,
                             "content": "Bookmark 10 - Chunk 0",
                         },
                         {
                             "id": 2,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 1,
                             "embedding": [0.2] * 384,
                             "content": "Bookmark 10 - Chunk 1",
                         },
                     ],
                 },
-                10,
+                "b0000000-0000-0000-0000-000000000001",
                 {"count": 2},
             ),
             pytest.param(
                 # delete chunks for non-existent bookmark
                 {
                     "bookmarks": [
-                        {"id": 10, "url": "https://test.com", "title": "Test website"},
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
                     ],
                     "chunks": [
                         {
                             "id": 1,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 0,
                             "embedding": [0.1] * 384,
                             "content": "Bookmark 10 - Chunk 0",
                         },
                         {
                             "id": 2,
-                            "bookmark_id": 10,
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
                             "chunk_index": 1,
                             "embedding": [0.2] * 384,
                             "content": "Bookmark 10 - Chunk 1",
                         },
                     ],
                 },
-                999,
+                "b0000000-0000-0000-0000-999999999999",
                 {"count": 0},
             ),
         ],

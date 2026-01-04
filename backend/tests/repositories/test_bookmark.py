@@ -1,4 +1,5 @@
 import pytest
+from uuid import UUID
 
 from app.repositories.bookmark import BookmarkRepository
 
@@ -17,14 +18,14 @@ class TestBookmarkRepository:
                 {},
                 "https://example.com",
                 "Example Site",
-                {"id": 1},
+                None,
             ),
             pytest.param(
                 # with pre-existing bookmark
                 {
                     "bookmarks": [
                         {
-                            "id": 20,
+                            "id": "b0000000-0000-0000-0000-000000000001",
                             "url": "https://duplicate.com",
                             "title": "First Title",
                         }
@@ -32,7 +33,7 @@ class TestBookmarkRepository:
                 },
                 "https://duplicate.com",
                 "Updated Title",
-                {"id": 20},
+                {"id": "b0000000-0000-0000-0000-000000000001"},
             ),
         ],
     )
@@ -42,9 +43,9 @@ class TestBookmarkRepository:
         insert_seed_data(**seed)
         bookmark_id = bookmark_repo.create_bookmark(url=url, title=title)
 
-        assert isinstance(bookmark_id, int)
-        assert bookmark_id > 0
-        assert bookmark_id == expected["id"]
+        assert isinstance(bookmark_id, UUID)
+        if expected is not None:
+            assert bookmark_id == UUID(expected["id"])
 
     @pytest.mark.parametrize(
         ["seed", "user_id", "bookmark_id", "expected"],
@@ -52,20 +53,20 @@ class TestBookmarkRepository:
             pytest.param(
                 # with pre-existing user and bookmark
                 {
-                    "users": [{"id": 100}],
+                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
                     "bookmarks": [
-                        {"id": 20, "url": "https://test.com", "title": "Test website"}
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"}
                     ],
                 },
-                100,
-                20,
+                "a0000000-0000-0000-0000-000000000001",
+                "b0000000-0000-0000-0000-000000000001",
                 {"id": 1},
             ),
             pytest.param(
                 # error case, no pre-existing bookmark to link
-                {"users": [{"id": 100}], "bookmarks": []},
-                100,
-                20,
+                {"users": [{"id": "a0000000-0000-0000-0000-000000000001"}], "bookmarks": []},
+                "a0000000-0000-0000-0000-000000000001",
+                "b0000000-0000-0000-0000-000000000001",
                 None,
                 marks=pytest.mark.xfail(raises=Exception, strict=True),
             ),
@@ -74,25 +75,25 @@ class TestBookmarkRepository:
                 {
                     "users": [],
                     "bookmarks": [
-                        {"id": 20, "url": "https://test.com", "title": "Test website"}
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"}
                     ],
                 },
-                100,
-                20,
+                "a0000000-0000-0000-0000-000000000001",
+                "b0000000-0000-0000-0000-000000000001",
                 None,
                 marks=pytest.mark.xfail(raises=Exception, strict=True),
             ),
             pytest.param(
                 # error case, pre-existing link
                 {
-                    "users": [{"id": 100}],
+                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
                     "bookmarks": [
-                        {"id": 20, "url": "https://test.com", "title": "Test website"}
+                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"}
                     ],
-                    "user_bookmarks": [{"id": 1, "user_id": 100, "bookmark_id": 20}],
+                    "user_bookmarks": [{"id": 1, "user_id": "a0000000-0000-0000-0000-000000000001", "bookmark_id": "b0000000-0000-0000-0000-000000000001"}],
                 },
-                100,
-                20,
+                "a0000000-0000-0000-0000-000000000001",
+                "b0000000-0000-0000-0000-000000000001",
                 None,
                 marks=pytest.mark.xfail(raises=Exception, strict=True),
             ),
