@@ -2,7 +2,7 @@ from enum import Enum, auto
 from typing import Any
 
 from app.db.connection import Database
-from app.models.embedding import EmbeddingModel
+from app.services.embedding_model import EmbeddingModel
 from app.repositories.chunk import ChunkRepository
 
 
