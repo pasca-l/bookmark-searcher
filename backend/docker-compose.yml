@@ -47,7 +47,7 @@ services:
       - POSTGRES_USER=bookmark_searcher_user
       - POSTGRES_PASSWORD=bookmark_searcher_password
     volumes:
-      - bookmark_searcher_data:/var/lib/postgresql/data
+      - bookmark_searcher_data:/var/lib/postgresql
       - ./app/db/schema/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test:

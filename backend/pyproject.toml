@@ -4,11 +4,15 @@ version = "0.1.0"
 description = ""
 requires-python = ">=3.14"
 dependencies = [
+    "authlib>=1.6.6",
     "beautifulsoup4>=4.14.3",
     "fastapi[standard]>=0.124.0",
+    "google-auth>=2.45.0",
     "httpx>=0.28.1",
     "lxml>=6.0.2",
     "psycopg[binary]>=3.3.2",
+    "pyjwt>=2.10.1",
+    "python-dotenv>=1.2.1",
     "readability-lxml>=0.8.4.1",
     "torch>=2.9.1",
     "transformers>=4.57.3",
