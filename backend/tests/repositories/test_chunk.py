@@ -131,6 +131,7 @@ class TestChunkRepository:
                     "count": 1,
                     "chunks": [
                         {
+                            "id": "b0000000-0000-0000-0000-000000000002",
                             "url": "https://test2.com",
                             "title": "Test 2",
                             "content": "Bookmark 20 - Chunk 0",

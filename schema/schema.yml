@@ -55,14 +55,33 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BookmarkQuery'
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
       responses:
         '200':
           description: Successfully retrieved search results
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bookmarks'
+                type: array
+                items:
+                  type: object
+                  required:
+                    - bookmark
+                    - similarity
+                    - chunk_content
+                  properties:
+                    bookmark:
+                      $ref: '#/components/schemas/Bookmark'
+                    similarity:
+                      type: number
+                      format: float
+                    chunk_content:
+                      type: string
         '500':
           description: Internal server error
           content:
@@ -105,10 +124,3 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Bookmark'
-    BookmarkQuery:
-      type: object
-      required:
-        - query
-      properties:
-        query:
-          type: string

@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.endpoints import auth, bookmarks, root
+from app.api.endpoints import auth, bookmarks, root, search
 
 app = FastAPI(
     title="Bookmark Searcher API",
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(root.router)
 app.include_router(auth.router)
 app.include_router(bookmarks.router)
+app.include_router(search.router)
 
 
 if __name__ == "__main__":

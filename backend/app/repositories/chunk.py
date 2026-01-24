@@ -33,7 +33,9 @@ class ChunkRepository:
         limit: int = 10,
     ) -> list[dict[str, Any]]:
         query = """
-            SELECT b.url, b.title, c.content,
+            SELECT
+                b.id, b.url, b.title,
+                c.content,
                 1 - (c.embedding <=> %s::vector) AS similarity
             FROM user_bookmarks ub
             INNER JOIN bookmarks b ON ub.bookmark_id = b.id
