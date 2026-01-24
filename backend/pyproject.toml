@@ -13,7 +13,6 @@ dependencies = [
     "psycopg[binary]>=3.3.2",
     "pyjwt>=2.10.1",
     "python-dotenv>=1.2.1",
-    "readability-lxml>=0.8.4.1",
     "torch>=2.9.1",
     "transformers>=4.57.3",
 ]

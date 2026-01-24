@@ -91,8 +91,12 @@ class EmbeddingService:
         chunks = []
         for i in range(0, len(tokens), chunk_size):
             chunk_tokens = tokens[i : i + chunk_size]
-            # decode tokens back to text
-            chunk = self.model.tokenizer.decode(chunk_tokens)
+            # decode tokens back to text, skipping special tokens like [UNK]
+            chunk = self.model.tokenizer.decode(
+                chunk_tokens,
+                skip_special_tokens=True,
+                clean_up_tokenization_spaces=True,
+            )
             chunks.append(chunk)
 
         return chunks

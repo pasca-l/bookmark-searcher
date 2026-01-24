@@ -3,7 +3,6 @@ from urllib.robotparser import RobotFileParser
 
 import httpx
 from bs4 import BeautifulSoup
-from readability import Document  # type: ignore
 
 
 class ScrapingService:
@@ -63,14 +62,31 @@ class ScrapingService:
             )
             response.raise_for_status()
 
-        doc = Document(response.text)
-        title = doc.title()
-        summary = doc.summary()
+        html = response.text
+        soup = BeautifulSoup(html, "lxml")
 
-        soup = BeautifulSoup(summary, "lxml")
-        for element in soup(["script", "style", "nav", "footer", "aside"]):
+        # get title from <title> tag or og:title
+        title = ""
+        if soup.title and soup.title.string:
+            title = soup.title.string.strip()
+        if not title:
+            og_title = soup.find("meta", property="og:title")
+            if og_title and og_title.get("content"):
+                content_attr = og_title["content"]
+                if isinstance(content_attr, list):
+                    title = content_attr[0].strip() if content_attr else ""
+                else:
+                    title = content_attr.strip()
+
+        # remove non-visible elements (scripts, styles, etc.)
+        for element in soup(["script", "style", "noscript", "meta", "link", "head"]):
             element.decompose()
+
+        # get all visible text from the page
         content = soup.get_text(separator=" ", strip=True)
+
+        # clean up whitespace (multiple spaces, newlines, tabs -> single space)
+        content = " ".join(content.split())
 
         return {"title": title, "content": content}
 
