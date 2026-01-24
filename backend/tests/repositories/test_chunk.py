@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import pytest
 
 from app.repositories.chunk import ChunkRepository
@@ -64,8 +66,16 @@ class TestChunkRepository:
                 # pre-existing chunk data with limit
                 {
                     "users": [
-                        {"id": "a0000000-0000-0000-0000-000000000001"},
-                        {"id": "a0000000-0000-0000-0000-000000000002"},
+                        {
+                            "id": "a0000000-0000-0000-0000-000000000001",
+                            "google_id": "google1",
+                            "email": "user1@test.com",
+                        },
+                        {
+                            "id": "a0000000-0000-0000-0000-000000000002",
+                            "google_id": "google2",
+                            "email": "user2@test.com",
+                        },
                     ],
                     "bookmarks": [
                         {
@@ -131,7 +141,7 @@ class TestChunkRepository:
                     "count": 1,
                     "chunks": [
                         {
-                            "id": "b0000000-0000-0000-0000-000000000002",
+                            "id": UUID("b0000000-0000-0000-0000-000000000002"),
                             "url": "https://test2.com",
                             "title": "Test 2",
                             "content": "Bookmark 20 - Chunk 0",
@@ -143,7 +153,13 @@ class TestChunkRepository:
             pytest.param(
                 # user with no bookmarks
                 {
-                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
+                    "users": [
+                        {
+                            "id": "a0000000-0000-0000-0000-000000000001",
+                            "google_id": "google1",
+                            "email": "user1@test.com",
+                        }
+                    ],
                     "bookmarks": [
                         {
                             "id": "b0000000-0000-0000-0000-000000000001",

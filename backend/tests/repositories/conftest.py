@@ -26,10 +26,10 @@ def insert_seed_data(db):
         for user in users or []:
             db.execute_query(
                 """
-                INSERT INTO users (id)
-                VALUES (%s)
+                INSERT INTO users (id, google_id, email)
+                VALUES (%s, %s, %s)
                 """,
-                (user["id"],),
+                (user["id"], user["google_id"], user["email"]),
             )
         for bookmark in bookmarks or []:
             db.execute_query(

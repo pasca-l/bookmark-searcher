@@ -2,6 +2,7 @@ from uuid import UUID
 
 import pytest
 
+from app.api.schemas.generated import Bookmark
 from app.repositories.bookmark import BookmarkRepository
 
 
@@ -42,11 +43,11 @@ class TestBookmarkRepository:
         self, insert_seed_data, bookmark_repo, seed, url, title, expected
     ):
         insert_seed_data(**seed)
-        bookmark_id = bookmark_repo.create_bookmark(url=url, title=title)
+        bookmark = bookmark_repo.create_bookmark(url=url, title=title)
 
-        assert isinstance(bookmark_id, UUID)
+        assert isinstance(bookmark, Bookmark)
         if expected is not None:
-            assert bookmark_id == UUID(expected["id"])
+            assert bookmark.id == UUID(expected["id"])
 
     @pytest.mark.parametrize(
         ["seed", "user_id", "bookmark_id", "expected"],
@@ -54,7 +55,13 @@ class TestBookmarkRepository:
             pytest.param(
                 # with pre-existing user and bookmark
                 {
-                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
+                    "users": [
+                        {
+                            "id": "a0000000-0000-0000-0000-000000000001",
+                            "google_id": "google123",
+                            "email": "test@example.com",
+                        }
+                    ],
                     "bookmarks": [
                         {
                             "id": "b0000000-0000-0000-0000-000000000001",
@@ -70,7 +77,13 @@ class TestBookmarkRepository:
             pytest.param(
                 # error case, no pre-existing bookmark to link
                 {
-                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
+                    "users": [
+                        {
+                            "id": "a0000000-0000-0000-0000-000000000001",
+                            "google_id": "google123",
+                            "email": "test@example.com",
+                        }
+                    ],
                     "bookmarks": [],
                 },
                 "a0000000-0000-0000-0000-000000000001",
