@@ -1,6 +1,7 @@
 MAKEFILE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SCHEMA_DIR := $(MAKEFILE_DIR)
 BACKEND_DIR := $(MAKEFILE_DIR)../backend
+FRONTEND_DIR := $(MAKEFILE_DIR)../frontend
 
 .PHONY: validate
 validate:
@@ -16,3 +17,4 @@ oapi-gen:
 		--output-model-type pydantic_v2.BaseModel \
 		--output $(BACKEND_DIR)/app/api/schemas/generated.py \
 		--use-schema-description
+	cd $(FRONTEND_DIR) && pnpm run oapi-gen
