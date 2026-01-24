@@ -1,4 +1,5 @@
 from typing import Any
+from uuid import UUID
 
 from app.db.connection import Database, FetchType
 
@@ -9,7 +10,7 @@ class ChunkRepository:
 
     def bulk_insert_chunks(
         self,
-        bookmark_id: int,
+        bookmark_id: UUID,
         chunks: list[tuple[int, list[float], str]],
     ) -> int:
         if not chunks:
@@ -27,7 +28,7 @@ class ChunkRepository:
 
     def find_similar_chunks_by_user_id(
         self,
-        user_id: int,
+        user_id: UUID,
         query_embedding: list[float],
         limit: int = 10,
     ) -> list[dict[str, Any]]:
@@ -49,7 +50,7 @@ class ChunkRepository:
         )
         return result if isinstance(result, list) else []
 
-    def delete_chunks_by_bookmark_id(self, bookmark_id: int) -> int:
+    def delete_chunks_by_bookmark_id(self, bookmark_id: UUID) -> int:
         query = """
             DELETE FROM chunks
             WHERE bookmark_id = %s

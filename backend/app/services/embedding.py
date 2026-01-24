@@ -1,9 +1,12 @@
 from enum import Enum, auto
 from typing import Any
+from uuid import UUID
 
-from app.db.connection import Database
-from app.services.embedding_model import EmbeddingModel
+from fastapi import Depends
+
+from app.db.connection import Database, new_database
 from app.repositories.chunk import ChunkRepository
+from app.services.embedding_model import EmbeddingModel, new_embedding_model
 
 
 class ChunkType(Enum):
@@ -22,7 +25,7 @@ class EmbeddingService:
         self.model = model
         self.chunk_type = chunk_type
 
-    def store_bookmark_embedding(self, bookmark_id: int, content: str) -> int:
+    def store_bookmark_embedding(self, bookmark_id: UUID, content: str) -> int:
         match self.chunk_type:
             case ChunkType.CHARACTER:
                 chunks = self._chunk_text_by_character(content)
@@ -43,11 +46,11 @@ class EmbeddingService:
         ]
         return self.chunk_repo.bulk_insert_chunks(bookmark_id, data)
 
-    def delete_bookmark_embedding(self, bookmark_id: int) -> int:
+    def delete_bookmark_embedding(self, bookmark_id: UUID) -> int:
         return self.chunk_repo.delete_chunks_by_bookmark_id(bookmark_id)
 
     def search_bookmark_embedding(
-        self, user_id: int, query: str, limit: int = 10
+        self, user_id: UUID, query: str, limit: int = 10
     ) -> list[dict[str, Any]]:
         # generate embedding for query
         query_embedding = self.model.encode([query])[0]
@@ -93,3 +96,10 @@ class EmbeddingService:
             chunks.append(chunk)
 
         return chunks
+
+
+def new_embedding_service(
+    db: Database = Depends(new_database),
+    model: EmbeddingModel = Depends(new_embedding_model),
+) -> EmbeddingService:
+    return EmbeddingService(db, model)

@@ -88,8 +88,8 @@ components:
         - url
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          format: uuid
         url:
           type: string
           format: uri

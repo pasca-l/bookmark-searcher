@@ -16,7 +16,11 @@ class TestChunkRepository:
                 # no pre-existing chunks
                 {
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        },
                     ]
                 },
                 "b0000000-0000-0000-0000-000000000001",
@@ -30,7 +34,11 @@ class TestChunkRepository:
                 # insert empty chunks list
                 {
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        },
                     ]
                 },
                 "b0000000-0000-0000-0000-000000000001",
@@ -55,15 +63,38 @@ class TestChunkRepository:
             pytest.param(
                 # pre-existing chunk data with limit
                 {
-                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}, {"id": "a0000000-0000-0000-0000-000000000002"}],
+                    "users": [
+                        {"id": "a0000000-0000-0000-0000-000000000001"},
+                        {"id": "a0000000-0000-0000-0000-000000000002"},
+                    ],
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test1.com", "title": "Test 1"},
-                        {"id": "b0000000-0000-0000-0000-000000000002", "url": "https://test2.com", "title": "Test 2"},
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test1.com",
+                            "title": "Test 1",
+                        },
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000002",
+                            "url": "https://test2.com",
+                            "title": "Test 2",
+                        },
                     ],
                     "user_bookmarks": [
-                        {"id": 1, "user_id": "a0000000-0000-0000-0000-000000000001", "bookmark_id": "b0000000-0000-0000-0000-000000000001"},
-                        {"id": 2, "user_id": "a0000000-0000-0000-0000-000000000001", "bookmark_id": "b0000000-0000-0000-0000-000000000002"},
-                        {"id": 3, "user_id": "a0000000-0000-0000-0000-000000000002", "bookmark_id": "b0000000-0000-0000-0000-000000000002"},
+                        {
+                            "id": 1,
+                            "user_id": "a0000000-0000-0000-0000-000000000001",
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
+                        },
+                        {
+                            "id": 2,
+                            "user_id": "a0000000-0000-0000-0000-000000000001",
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000002",
+                        },
+                        {
+                            "id": 3,
+                            "user_id": "a0000000-0000-0000-0000-000000000002",
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000002",
+                        },
                     ],
                     "chunks": [
                         {
@@ -113,7 +144,11 @@ class TestChunkRepository:
                 {
                     "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test1.com", "title": "Test website"}
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test1.com",
+                            "title": "Test website",
+                        }
                     ],
                     "user_bookmarks": [],
                     "chunks": [
@@ -172,7 +207,11 @@ class TestChunkRepository:
                 # pre-existing chunks to delete
                 {
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        },
                     ],
                     "chunks": [
                         {
@@ -198,7 +237,11 @@ class TestChunkRepository:
                 # delete chunks for non-existent bookmark
                 {
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"},
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        },
                     ],
                     "chunks": [
                         {

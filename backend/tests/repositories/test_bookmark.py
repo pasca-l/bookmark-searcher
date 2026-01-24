@@ -1,5 +1,6 @@
-import pytest
 from uuid import UUID
+
+import pytest
 
 from app.repositories.bookmark import BookmarkRepository
 
@@ -55,7 +56,11 @@ class TestBookmarkRepository:
                 {
                     "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"}
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        }
                     ],
                 },
                 "a0000000-0000-0000-0000-000000000001",
@@ -64,7 +69,10 @@ class TestBookmarkRepository:
             ),
             pytest.param(
                 # error case, no pre-existing bookmark to link
-                {"users": [{"id": "a0000000-0000-0000-0000-000000000001"}], "bookmarks": []},
+                {
+                    "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
+                    "bookmarks": [],
+                },
                 "a0000000-0000-0000-0000-000000000001",
                 "b0000000-0000-0000-0000-000000000001",
                 None,
@@ -75,7 +83,11 @@ class TestBookmarkRepository:
                 {
                     "users": [],
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"}
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        }
                     ],
                 },
                 "a0000000-0000-0000-0000-000000000001",
@@ -88,9 +100,19 @@ class TestBookmarkRepository:
                 {
                     "users": [{"id": "a0000000-0000-0000-0000-000000000001"}],
                     "bookmarks": [
-                        {"id": "b0000000-0000-0000-0000-000000000001", "url": "https://test.com", "title": "Test website"}
+                        {
+                            "id": "b0000000-0000-0000-0000-000000000001",
+                            "url": "https://test.com",
+                            "title": "Test website",
+                        }
                     ],
-                    "user_bookmarks": [{"id": 1, "user_id": "a0000000-0000-0000-0000-000000000001", "bookmark_id": "b0000000-0000-0000-0000-000000000001"}],
+                    "user_bookmarks": [
+                        {
+                            "id": 1,
+                            "user_id": "a0000000-0000-0000-0000-000000000001",
+                            "bookmark_id": "b0000000-0000-0000-0000-000000000001",
+                        }
+                    ],
                 },
                 "a0000000-0000-0000-0000-000000000001",
                 "b0000000-0000-0000-0000-000000000001",

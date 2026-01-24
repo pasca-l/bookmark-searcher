@@ -33,7 +33,7 @@ class TestScrapingService:
                 None,
                 marks=pytest.mark.xfail,
             ),
-        ]
+        ],
     )
     @pytest.mark.anyio
     async def test__extract_content(self, scraping_service, url, expected):

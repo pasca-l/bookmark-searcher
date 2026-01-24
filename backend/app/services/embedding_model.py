@@ -57,3 +57,7 @@ class EmbeddingModel:
     @property
     def embedding_dim(self) -> int:
         return self.model.config.hidden_size
+
+
+def new_embedding_model() -> EmbeddingModel:
+    return EmbeddingModel()
