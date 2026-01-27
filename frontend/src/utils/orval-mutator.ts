@@ -7,15 +7,22 @@ const API_BASE_URL = "http://localhost:8000";
 
 export const orvalMutator = async <T>(
   url: string,
-  config?: OrvalMutatorConfig
+  config?: OrvalMutatorConfig,
 ): Promise<T> => {
-  const { method = "GET", headers, data, params, ...restConfig } = config || {};
+  const {
+    method = "GET",
+    headers,
+    data,
+    params,
+    body,
+    ...restConfig
+  } = config || {};
 
   // build query string from params
   const queryString = params
     ? "?" +
       new URLSearchParams(
-        Object.entries(params).map(([key, value]) => [key, String(value)])
+        Object.entries(params).map(([key, value]) => [key, String(value)]),
       ).toString()
     : "";
 
@@ -27,7 +34,8 @@ export const orvalMutator = async <T>(
       "Content-Type": "application/json",
       ...(headers as Record<string, string>),
     },
-    body: data ? JSON.stringify(data) : undefined,
+    // use body if provided (from generated code), otherwise use data
+    body: body || (data ? JSON.stringify(data) : undefined),
   });
 
   if (!response.ok) {
@@ -43,5 +51,11 @@ export const orvalMutator = async <T>(
     return undefined as T;
   }
 
-  return response.json();
+  const responseData = await response.json();
+
+  return {
+    data: responseData,
+    status: response.status,
+    headers: response.headers,
+  } as T;
 };
