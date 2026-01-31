@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timedelta, timezone
+from functools import lru_cache
 from typing import Any, Literal
 from uuid import UUID
 
@@ -51,5 +52,6 @@ class AuthUtils:
         return response
 
 
+@lru_cache
 def get_auth_utils() -> AuthUtils:
     return AuthUtils()

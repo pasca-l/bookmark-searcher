@@ -20,9 +20,7 @@ export const useLogin = (): UseLoginResult => {
       });
     },
     onSuccess: () => {
-      // invalidate auth check to refetch
       queryClient.invalidateQueries({ queryKey: ["auth-check"] });
-      queryClient.invalidateQueries({ queryKey: ["/bookmarks"] });
     },
   });
 
