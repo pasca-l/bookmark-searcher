@@ -12,11 +12,14 @@ services:
       - DB_NAME=bookmark_searcher_db
       - DB_USER=bookmark_searcher_user
       - DB_PASSWORD=bookmark_searcher_password
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     depends_on:
       bookmark-searcher-postgres:
         condition: service_healthy
       bookmark-searcher-migration:
         condition: service_completed_successfully
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
   bookmark-searcher-migration:
     build:
