@@ -1,4 +1,4 @@
-name: CI
+name: Backend CI
 
 on:
   push:
@@ -12,7 +12,6 @@ on:
     paths:
       - 'backend/**'
 
-# automatically cancel in-progress actions on the same branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
   cancel-in-progress: true
@@ -25,7 +24,7 @@ jobs:
       run:
         working-directory: ./backend
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version-file: backend/.python-version
@@ -64,7 +63,7 @@ jobs:
       DB_USER: testuser
       DB_PASSWORD: testpassword
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version-file: backend/.python-version
