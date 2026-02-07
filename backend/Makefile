@@ -1,12 +1,10 @@
 .PHONY: format
 format:
-	uv run isort ./app ./tests
-	uv run black ./app ./tests
+	uv run ruff format ./app ./tests
 
 .PHONY: lint
 lint:
-	uv run flake8 ./app --ignore=E203,E501,W503
-	uv run mypy ./app
+	uv run ruff check ./app
 
 .PHONY: test
 test:
