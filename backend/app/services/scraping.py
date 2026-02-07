@@ -41,7 +41,7 @@ class ScrapingService:
                             rp.parse(response.text.splitlines())
 
                 # if robots.txt is not accessible, assume scraping is allowed
-                except (httpx.HTTPError, httpx.TimeoutException):
+                except httpx.HTTPError, httpx.TimeoutException:
                     pass
 
                 self._robots_cache[base_url] = rp

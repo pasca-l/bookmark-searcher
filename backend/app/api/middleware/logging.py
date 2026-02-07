@@ -33,7 +33,7 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                 error_detail = error_data.get("detail", "")
                 if error_detail:
                     log_message += f" - {error_detail}"
-            except (json.JSONDecodeError, UnicodeDecodeError):
+            except json.JSONDecodeError, UnicodeDecodeError:
                 pass
 
             # recreate response as it is iterated and exhausted
