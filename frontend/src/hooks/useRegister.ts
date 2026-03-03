@@ -1,18 +1,18 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useLoginUser } from "../api/generated";
+import { useRegisterUser } from "../api/generated";
 import type { Error } from "../api/generated";
 
-export type UseLoginResult = {
-  login: (username: string, password: string) => void;
+export type UseRegisterResult = {
+  register: (username: string, password: string) => void;
   isPending: boolean;
   isError: boolean;
   error: Error | null;
 };
 
-export const useLogin = (): UseLoginResult => {
+export const useRegister = (): UseRegisterResult => {
   const queryClient = useQueryClient();
 
-  const mutation = useLoginUser({
+  const mutation = useRegisterUser({
     mutation: {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["auth-check"] });
@@ -20,12 +20,12 @@ export const useLogin = (): UseLoginResult => {
     },
   });
 
-  const login = (username: string, password: string): void => {
+  const register = (username: string, password: string): void => {
     mutation.mutate({ data: { username, password } });
   };
 
   return {
-    login,
+    register,
     isPending: mutation.isPending,
     isError: mutation.isError,
     error: mutation.error ?? null,
