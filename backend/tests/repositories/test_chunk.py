@@ -68,13 +68,13 @@ class TestChunkRepository:
                     "users": [
                         {
                             "id": "a0000000-0000-0000-0000-000000000001",
-                            "google_id": "google1",
-                            "email": "user1@test.com",
+                            "username": "user1",
+                            "user_password": "password1",
                         },
                         {
                             "id": "a0000000-0000-0000-0000-000000000002",
-                            "google_id": "google2",
-                            "email": "user2@test.com",
+                            "username": "user2",
+                            "user_password": "password2",
                         },
                     ],
                     "bookmarks": [
@@ -156,8 +156,8 @@ class TestChunkRepository:
                     "users": [
                         {
                             "id": "a0000000-0000-0000-0000-000000000001",
-                            "google_id": "google1",
-                            "email": "user1@test.com",
+                            "username": "user123",
+                            "user_password": "password123",
                         }
                     ],
                     "bookmarks": [

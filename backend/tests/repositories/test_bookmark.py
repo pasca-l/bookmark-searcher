@@ -58,8 +58,8 @@ class TestBookmarkRepository:
                     "users": [
                         {
                             "id": "a0000000-0000-0000-0000-000000000001",
-                            "google_id": "google123",
-                            "email": "test@example.com",
+                            "username": "user123",
+                            "user_password": "password123",
                         }
                     ],
                     "bookmarks": [
@@ -80,8 +80,8 @@ class TestBookmarkRepository:
                     "users": [
                         {
                             "id": "a0000000-0000-0000-0000-000000000001",
-                            "google_id": "google123",
-                            "email": "test@example.com",
+                            "username": "user123",
+                            "user_password": "password123",
                         }
                     ],
                     "bookmarks": [],
