@@ -22,29 +22,31 @@ async def register(
         if existing_user is not None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="username already exists"
+                detail="username already exists",
             )
 
         if len(username) < 3:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="username must be at least 3 characters"
+                detail="username must be at least 3 characters",
             )
         if len(password) < 8:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="password must be at least 8 characters"
+                detail="password must be at least 8 characters",
             )
 
         print(f"Registering user: {username}")  # Debug log
-        print(f"Password type: {type(password)}, length: {len(password)}, value: {password!r}")
+        print(
+            f"Password type: {type(password)}, length: {len(password)}, value: {password!r}"
+        )
         print(f"Password bytes length: {len(password.encode('utf-8'))}")
 
         password_hash = password_utils.hash_password(password)
-        print(f"Hash type: {type(password_hash)}, length: {len(password_hash)}, value: {password_hash!r}")
-        user_id = user_repo.create_user(
-            username=username, password=password_hash
+        print(
+            f"Hash type: {type(password_hash)}, length: {len(password_hash)}, value: {password_hash!r}"
         )
+        user_id = user_repo.create_user(username=username, password=password_hash)
 
         jwt_token = auth_utils.create_access_token(user_id=user_id)
         auth_utils.set_auth_cookie(response, jwt_token)
@@ -56,7 +58,7 @@ async def register(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"registration failed: {str(e)}"
+            detail=f"registration failed: {str(e)}",
         )
 
 
@@ -74,13 +76,13 @@ async def login(
         if user is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="invalid username or password"
+                detail="invalid username or password",
             )
 
         if not password_utils.verify_password(password, user.password_hash):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="invalid username or password"
+                detail="invalid username or password",
             )
 
         jwt_token = auth_utils.create_access_token(user_id=user.id)
@@ -93,7 +95,7 @@ async def login(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"authentication failed: {str(e)}"
+            detail=f"authentication failed: {str(e)}",
         )
 
 

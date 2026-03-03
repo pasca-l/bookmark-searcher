@@ -26,9 +26,7 @@ class UserRepository:
             VALUES (%s, %s)
             RETURNING id
         """
-        result = self.db.execute_query(
-            query, (username, password), fetch=FetchType.ONE
-        )
+        result = self.db.execute_query(query, (username, password), fetch=FetchType.ONE)
         result = cast(dict[str, Any], result)
         return result["id"]
 
