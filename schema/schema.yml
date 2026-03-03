@@ -3,10 +3,95 @@ info:
   title: Bookmark Searcher API
   version: 1.0.0
 paths:
+  /auth/register:
+    post:
+      operationId: register-user
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Successfully registered user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auth/login:
+    post:
+      operationId: login-user
+      summary: Login a user and receive an authentication token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auth/logout:
+    post:
+      operationId: logout-user
+      summary: Logout a user and invalidate the authentication token
+      responses:
+        '200':
+          description: Successfully logged out
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /bookmarks:
     get:
       operationId: get-bookmarks
-      description: Retrieve list of bookmarks
+      summary: Retrieve list of bookmarks
       responses:
         '200':
           description: Successfully retrieved list of bookmarks
@@ -22,7 +107,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     post:
       operationId: create-bookmark
-      description: Create a new bookmark
+      summary: Create a new bookmark
       requestBody:
         content:
           application/json:
@@ -50,7 +135,7 @@ paths:
   /search:
     post:
       operationId: search-bookmarks
-      description: Search bookmarks by query
+      summary: Search bookmarks by query
       requestBody:
         content:
           application/json:
@@ -99,6 +184,13 @@ components:
         status_code:
           type: integer
         message:
+          type: string
+    AuthToken:
+      type: object
+      required:
+        - token
+      properties:
+        token:
           type: string
     Bookmark:
       type: object

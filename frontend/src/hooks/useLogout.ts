@@ -1,9 +1,9 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { orvalMutator } from "../utils/orval-mutator";
+import { useQueryClient } from "@tanstack/react-query";
+import { useLogoutUser } from "../api/generated";
 import type { Error } from "../api/generated";
 
 export type UseLogoutResult = {
-  logout: () => Promise<void>;
+  logout: () => void;
   isPending: boolean;
   isError: boolean;
   error: Error | null;
@@ -12,29 +12,26 @@ export type UseLogoutResult = {
 export const useLogout = (): UseLogoutResult => {
   const queryClient = useQueryClient();
 
-  const logoutMutation = useMutation<unknown, Error, void>({
-    mutationFn: async () => {
-      return orvalMutator("/auth/logout", {
-        method: "POST",
-      });
-    },
-    onSuccess: () => {
-      // clear all queries after logout
-      queryClient.clear();
+  const mutation = useLogoutUser({
+    mutation: {
+      onSuccess: () => {
+        // clear all queries after logout
+        queryClient.clear();
 
-      // reload page to reset auth state
-      window.location.reload();
+        // reload page to reset auth state
+        window.location.reload();
+      },
     },
   });
 
-  const logout = async (): Promise<void> => {
-    await logoutMutation.mutateAsync();
+  const logout = (): void => {
+    mutation.mutate();
   };
 
   return {
     logout,
-    isPending: logoutMutation.isPending,
-    isError: logoutMutation.isError,
-    error: logoutMutation.error ?? null,
+    isPending: mutation.isPending,
+    isError: mutation.isError,
+    error: mutation.error ?? null,
   };
 };

@@ -1,4 +1,5 @@
-import { Authentication } from "./components/Authentication";
+import { LogoutButton } from "./components/LogoutButton";
+import { LoginForm } from "./components/LoginForm";
 import { BookmarkList } from "./components/BookmarkList";
 import { BookmarkSearch } from "./components/BookmarkSearch";
 import { useAuthCheck } from "./hooks/useAuthCheck";
@@ -14,19 +15,23 @@ function App() {
             <h1 className="text-3xl font-bold text-gray-900">
               Bookmark Searcher
             </h1>
-            <Authentication isAuthenticated={isAuthenticated} />
+            {isAuthenticated && <LogoutButton />}
           </div>
         </div>
       </header>
 
-      {isAuthenticated && (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {!isAuthenticated ? (
+          <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+            <LoginForm />
+          </div>
+        ) : (
           <div className="space-y-8">
             <BookmarkSearch />
             <BookmarkList />
           </div>
-        </main>
-      )}
+        )}
+      </main>
     </div>
   );
 }
